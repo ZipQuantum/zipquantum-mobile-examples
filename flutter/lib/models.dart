@@ -20,17 +20,21 @@ class ZqDelivery {
   final ZqRouteAcknowledgement? routeAck;
 
   factory ZqDelivery.fromJson(Object? value) {
-    if (value is! Map || value['success'] != true)
+    if (value is! Map || value['success'] != true) {
       throw const FormatException('Unsuccessful ZipQuantum delivery');
+    }
     final delivery = value['delivery'];
-    if (delivery != 'deep_link' && delivery != 'deferred_deep_link')
+    if (delivery != 'deep_link' && delivery != 'deferred_deep_link') {
       throw const FormatException('Invalid delivery type');
+    }
     final link = value['link'];
-    if (link is! Map || link['url'] is! String)
+    if (link is! Map || link['url'] is! String) {
       throw const FormatException('Invalid link payload');
+    }
     final url = Uri.tryParse(link['url'] as String);
-    if (url == null || !url.hasScheme)
+    if (url == null || !url.hasScheme) {
       throw const FormatException('Invalid link URL');
+    }
 
     ZqRouteAcknowledgement? acknowledgement;
     final ack = value['route_ack'];

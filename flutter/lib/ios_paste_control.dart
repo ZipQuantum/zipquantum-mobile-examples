@@ -6,8 +6,9 @@ class ZipQuantumPasteControl extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (defaultTargetPlatform != TargetPlatform.iOS)
+    if (defaultTargetPlatform != TargetPlatform.iOS) {
       return const SizedBox.shrink();
+    }
     return const SizedBox(
       height: 52,
       child: UiKitView(viewType: 'tn.zq.zipquantum/paste-control'),

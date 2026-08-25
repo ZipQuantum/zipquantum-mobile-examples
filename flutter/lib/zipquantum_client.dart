@@ -35,8 +35,9 @@ class ZipQuantumClient {
   }
 
   Future<ZqDelivery> recover(ZqDeferredHandoff handoff) async {
-    if (!ZqConfiguration.allowedHosts.contains(handoff.host))
+    if (!ZqConfiguration.allowedHosts.contains(handoff.host)) {
       throw const FormatException('Unconfigured deferred-link host');
+    }
     final path = Platform.isIOS
         ? '/api/mobile/v1/deferred/ios/recover'
         : '/api/mobile/v1/deferred/recover';

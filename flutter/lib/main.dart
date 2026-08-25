@@ -55,12 +55,16 @@ class _LinkPageState extends State<LinkPage> {
       }
     });
     unawaited(_listen());
-    if (Platform.isAndroid) unawaited(_recoverFromPlay());
+    if (Platform.isAndroid) {
+      unawaited(_recoverFromPlay());
+    }
   }
 
   Future<void> _listen() async {
     final initial = await appLinks.getInitialLink();
-    if (initial != null) await _resolve(initial);
+    if (initial != null) {
+      await _resolve(initial);
+    }
     subscription = appLinks.uriLinkStream.listen(_resolve, onError: _fail);
   }
 
@@ -68,8 +72,9 @@ class _LinkPageState extends State<LinkPage> {
     try {
       final value =
           await handoffChannel.invokeMethod<String>('getInstallReferrer');
-      if (value != null && value.isNotEmpty)
+      if (value != null && value.isNotEmpty) {
         await _recover(parseInstallReferrer(value));
+      }
     } on MissingPluginException {
       // Available only in the Android build distributed through Google Play.
     } on Object catch (value) {
@@ -94,7 +99,9 @@ class _LinkPageState extends State<LinkPage> {
   }
 
   Future<void> _accept(ZqDelivery next) async {
-    if (!mounted) return;
+    if (!mounted) {
+      return;
+    }
     setState(() {
       delivery = next;
       error = null;
@@ -105,7 +112,9 @@ class _LinkPageState extends State<LinkPage> {
     // Acknowledge only after Flutter has painted the destination route card.
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       final ack = next.routeAck;
-      if (ack == null) return;
+      if (ack == null) {
+        return;
+      }
       final host = next.link.host ?? next.link.url.host;
       try {
         await client.acknowledgeRouteOpened(ack, host);
@@ -116,7 +125,9 @@ class _LinkPageState extends State<LinkPage> {
   }
 
   void _fail(Object value) {
-    if (mounted) setState(() => error = value);
+    if (mounted) {
+      setState(() => error = value);
+    }
   }
 
   @override
