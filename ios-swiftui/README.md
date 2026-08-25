@@ -13,6 +13,8 @@ xcodegen generate
 xcodebuild -project ZipQuantumExample.xcodeproj -scheme ZipQuantumExample -destination 'platform=iOS Simulator,name=iPhone 16' test
 ```
 
+CI performs a generic simulator build because GitHub's macOS image may not include a bootable simulator runtime. Run the unit tests locally on any installed iOS simulator.
+
 Universal Links should be tested on a physical device for production confidence. Deferred recovery is initiated only by the visible native paste control.
 
 ## Agent check
