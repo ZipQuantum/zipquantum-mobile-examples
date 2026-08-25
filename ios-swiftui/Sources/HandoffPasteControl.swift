@@ -21,13 +21,16 @@ struct HandoffPasteControl: UIViewRepresentable {
     func updateUIView(_ uiView: UIPasteControl, context: Context) {}
 }
 
-final class PasteTarget: UIResponder, UIPasteConfigurationSupporting {
-    var pasteConfiguration: UIPasteConfiguration? = UIPasteConfiguration(forAccepting: NSString.self)
+final class PasteTarget: UIResponder {
     private let onValue: (String) -> Void
 
-    init(onValue: @escaping (String) -> Void) { self.onValue = onValue }
+    init(onValue: @escaping (String) -> Void) {
+        self.onValue = onValue
+        super.init()
+        pasteConfiguration = UIPasteConfiguration(forAccepting: NSString.self)
+    }
 
-    func paste(itemProviders: [NSItemProvider]) {
+    override func paste(itemProviders: [NSItemProvider]) {
         guard let provider = itemProviders.first(where: { $0.canLoadObject(ofClass: NSString.self) }) else { return }
         provider.loadObject(ofClass: NSString.self) { [weak self] object, _ in
             guard let value = object as? String else { return }
