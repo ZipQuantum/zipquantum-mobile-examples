@@ -6,6 +6,9 @@ DerivedData/
 *.xcuserstate
 xcuserdata/
 local.properties
+**/node_modules/
+.playwright-cli/
+output/playwright/
 *.jks
 *.keystore
 *.mobileprovision

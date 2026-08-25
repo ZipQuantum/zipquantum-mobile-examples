@@ -1,4 +1,4 @@
-param([ValidateSet('all','ios','android')][string]$Platform = 'all')
+param([ValidateSet('all','ios','android','react-native')][string]$Platform = 'all')
 $ErrorActionPreference = 'Stop'
 $root = Split-Path -Parent $PSScriptRoot
 $errors = 0
@@ -10,10 +10,13 @@ function Fail([string]$message) { $script:errors++; Write-Output "ZQ_ERROR $mess
 try { Get-Content "$root/contracts/mobile-v1.schema.json" -Raw | ConvertFrom-Json | Out-Null; Ok 'contract_json_valid' } catch { Fail "contract_json_invalid: $($_.Exception.Message)" }
 try { Get-Content "$root/ai-manifest.json" -Raw | ConvertFrom-Json | Out-Null; Ok 'ai_manifest_valid' } catch { Fail "ai_manifest_invalid: $($_.Exception.Message)" }
 
-$sources = @(
-  Get-ChildItem "$root/ios-swiftui" -Recurse -File
-  Get-ChildItem "$root/android-kotlin" -Recurse -File
-)
+$sources = Get-ChildItem @(
+  "$root/ios-swiftui",
+  "$root/android-kotlin",
+  "$root/react-native"
+) -Recurse -File | Where-Object {
+  $_.FullName -notmatch '[\\/](node_modules|build|\.gradle|Pods)[\\/]'
+}
 $forbidden = 'AdvertisingIdClient|identifierForVendor|ASIdentifierManager|fingerprintjs|UIPasteboard\.general\.string'
 $matches = $sources | Select-String -Pattern $forbidden
 if ($matches) { $matches | ForEach-Object { Fail "forbidden_pattern $($_.Path):$($_.LineNumber)" } } else { Ok 'privacy_invariants_static' }
@@ -30,6 +33,17 @@ if ($Platform -in @('all','android')) {
   $config = Get-Content "$root/android-kotlin/app/src/main/java/com/example/zipquantum/ZQConfiguration.kt" -Raw
   if ($manifest -match 'android:autoVerify="true"') { Ok 'android_autoverify_enabled' } else { Fail 'android_autoverify_missing' }
   if ($config -match 'links\.example\.com' -and $manifest -match 'links\.example\.com') { Warn 'android_uses_example_host' } else { Ok 'android_host_configured' }
+}
+
+if ($Platform -in @('all','react-native')) {
+  $paste = Get-Content "$root/react-native/ios/ZipQuantumPasteControlViewManager.swift" -Raw
+  $manifest = Get-Content "$root/react-native/android/AndroidManifest.xml.snippet" -Raw
+  $referrer = Get-Content "$root/react-native/android/ZipQuantumInstallReferrerModule.kt" -Raw
+  $config = Get-Content "$root/react-native/src/config.ts" -Raw
+  if ($paste -match 'UIPasteControl') { Ok 'react_native_explicit_paste_control' } else { Fail 'react_native_missing_uipastecontrol' }
+  if ($manifest -match 'android:autoVerify="true"') { Ok 'react_native_android_autoverify_enabled' } else { Fail 'react_native_android_autoverify_missing' }
+  if ($referrer -match 'InstallReferrerClient') { Ok 'react_native_install_referrer_enabled' } else { Fail 'react_native_install_referrer_missing' }
+  if ($config -match 'links\.example\.com') { Warn 'react_native_uses_example_host' } else { Ok 'react_native_host_configured' }
 }
 
 if ($errors -gt 0) { exit 1 }

@@ -16,6 +16,12 @@
       "minimum_sdk": 23,
       "direct_delivery": "verified App Links",
       "deferred_delivery": "Google Play Install Referrer"
+    },
+    "react_native": {
+      "path": "react-native",
+      "minimum_version": "0.86.3",
+      "direct_delivery": "React Native Linking with Universal Links or verified App Links",
+      "deferred_delivery": "native UIPasteControl or Google Play Install Referrer adapter"
     }
   },
   "privacy": {

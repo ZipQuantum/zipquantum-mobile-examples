@@ -30,6 +30,22 @@ jobs:
           gradle-version: '9.1.0'
       - run: gradle test lint --stacktrace
 
+  react-native:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: react-native
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: react-native/package-lock.json
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm test
+
   ios:
     runs-on: macos-latest
     defaults:

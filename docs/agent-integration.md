@@ -6,7 +6,7 @@ This repository is structured for coding agents and CI systems as well as humans
 
 - ZipQuantum API base URL, normally `https://a.zq.tn`.
 - Verified link hostname.
-- iOS Team ID and Bundle ID, or Android application ID and SHA-256 certificate fingerprint.
+- iOS Team ID and Bundle ID, Android application ID and SHA-256 certificate fingerprint, or both for a cross-platform React Native app.
 - A non-production test link from the DDL Test Lab.
 
 Never infer these values from branding or repository names. Read them from the ZipQuantum dashboard or explicit environment variables.
@@ -19,6 +19,8 @@ Never infer these values from branding or repository names. Read them from the Z
 4. Run direct-link tests with the app installed.
 5. Run deferred tests only with a disposable test link/token.
 6. Confirm the aggregate funnel reaches `route_opened`.
+
+For React Native, treat `react-native/ios` and `react-native/android` as required platform code, not optional JavaScript fallbacks. Do not replace `UIPasteControl` with a clipboard module.
 
 ## Machine behavior
 

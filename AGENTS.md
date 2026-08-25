@@ -1,6 +1,6 @@
 # Agent instructions
 
-This repository contains independent native reference apps. Do not add a proprietary ZipQuantum SDK.
+This repository contains independent mobile reference apps. Do not add a proprietary ZipQuantum SDK.
 
 ## Deterministic workflow
 
@@ -22,6 +22,7 @@ This repository contains independent native reference apps. Do not add a proprie
 
 - `ios-swiftui/`: SwiftUI example and XcodeGen definition.
 - `android-kotlin/`: Jetpack Compose example.
+- `react-native/`: React Native TypeScript example with auditable native adapters.
 - `contracts/`: machine-readable API shapes.
 - `docs/`: human and agent integration guidance.
 - `scripts/`: non-interactive validation entrypoints.
