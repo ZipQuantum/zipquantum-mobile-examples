@@ -7,13 +7,13 @@ final class LinkViewModel: ObservableObject {
     @Published private(set) var isWorking = false
     private let client = ZipQuantumClient()
 
-    func openUniversalLink(_ url: URL) { Task { await deliver { try await client.resolve(url) } } }
+    func openUniversalLink(_ url: URL) { Task { await deliver { try await self.client.resolve(url) } } }
 
     func restoreFromPaste(_ value: String) {
         Task {
             do {
                 let handoff = try ZQHandoff.parse(value, expectedBundleID: ZQConfiguration.bundleID)
-                await deliver { try await client.recover(handoff) }
+                await deliver { try await self.client.recover(handoff) }
             } catch { status = error.localizedDescription }
         }
     }
