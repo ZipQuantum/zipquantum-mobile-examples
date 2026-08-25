@@ -22,6 +22,12 @@
       "minimum_version": "0.86.3",
       "direct_delivery": "React Native Linking with Universal Links or verified App Links",
       "deferred_delivery": "native UIPasteControl or Google Play Install Referrer adapter"
+    },
+    "flutter": {
+      "path": "flutter",
+      "minimum_version": "3.47.1",
+      "direct_delivery": "app_links with Universal Links or verified App Links",
+      "deferred_delivery": "native UIPasteControl or Google Play Install Referrer adapter"
     }
   },
   "privacy": {

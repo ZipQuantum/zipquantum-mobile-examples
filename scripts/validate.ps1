@@ -1,4 +1,4 @@
-param([ValidateSet('all','ios','android','react-native')][string]$Platform = 'all')
+param([ValidateSet('all','ios','android','react-native','flutter')][string]$Platform = 'all')
 $ErrorActionPreference = 'Stop'
 $root = Split-Path -Parent $PSScriptRoot
 $errors = 0
@@ -14,8 +14,9 @@ $sources = Get-ChildItem @(
   "$root/ios-swiftui",
   "$root/android-kotlin",
   "$root/react-native"
+  "$root/flutter"
 ) -Recurse -File | Where-Object {
-  $_.FullName -notmatch '[\\/](node_modules|build|\.gradle|Pods)[\\/]'
+  $_.FullName -notmatch '[\\/](node_modules|build|\.gradle|\.dart_tool|Pods)[\\/]'
 }
 $forbidden = 'AdvertisingIdClient|identifierForVendor|ASIdentifierManager|fingerprintjs|UIPasteboard\.general\.string'
 $matches = $sources | Select-String -Pattern $forbidden
@@ -44,6 +45,17 @@ if ($Platform -in @('all','react-native')) {
   if ($manifest -match 'android:autoVerify="true"') { Ok 'react_native_android_autoverify_enabled' } else { Fail 'react_native_android_autoverify_missing' }
   if ($referrer -match 'InstallReferrerClient') { Ok 'react_native_install_referrer_enabled' } else { Fail 'react_native_install_referrer_missing' }
   if ($config -match 'links\.example\.com') { Warn 'react_native_uses_example_host' } else { Ok 'react_native_host_configured' }
+}
+
+if ($Platform -in @('all','flutter')) {
+  $paste = Get-Content "$root/flutter/ios/ZipQuantumPasteControl.swift" -Raw
+  $manifest = Get-Content "$root/flutter/android/AndroidManifest.xml.snippet" -Raw
+  $referrer = Get-Content "$root/flutter/android/MainActivity.kt.snippet" -Raw
+  $config = Get-Content "$root/flutter/lib/configuration.dart" -Raw
+  if ($paste -match 'UIPasteControl') { Ok 'flutter_explicit_paste_control' } else { Fail 'flutter_missing_uipastecontrol' }
+  if ($manifest -match 'android:autoVerify="true"') { Ok 'flutter_android_autoverify_enabled' } else { Fail 'flutter_android_autoverify_missing' }
+  if ($referrer -match 'InstallReferrerClient') { Ok 'flutter_install_referrer_enabled' } else { Fail 'flutter_install_referrer_missing' }
+  if ($config -match 'links\.example\.com') { Warn 'flutter_uses_example_host' } else { Ok 'flutter_host_configured' }
 }
 
 if ($errors -gt 0) { exit 1 }

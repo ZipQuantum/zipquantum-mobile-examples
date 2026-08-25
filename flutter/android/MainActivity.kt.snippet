@@ -1,0 +1,28 @@
+package com.example.zipquantum
+
+import com.android.installreferrer.api.InstallReferrerClient
+import com.android.installreferrer.api.InstallReferrerStateListener
+import io.flutter.embedding.android.FlutterActivity
+import io.flutter.embedding.engine.FlutterEngine
+import io.flutter.plugin.common.MethodChannel
+
+class MainActivity : FlutterActivity() {
+    override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
+        super.configureFlutterEngine(flutterEngine)
+        MethodChannel(flutterEngine.dartExecutor.binaryMessenger, "tn.zq.zipquantum/handoff")
+            .setMethodCallHandler { call, result ->
+                if (call.method != "getInstallReferrer") return@setMethodCallHandler result.notImplemented()
+                val client = InstallReferrerClient.newBuilder(this).build()
+                client.startConnection(object : InstallReferrerStateListener {
+                    override fun onInstallReferrerSetupFinished(code: Int) {
+                        try {
+                            if (code == InstallReferrerClient.InstallReferrerResponse.OK) {
+                                result.success(client.installReferrer.installReferrer)
+                            } else result.error("ZQ_REFERRER_$code", "Install Referrer unavailable", null)
+                        } finally { client.endConnection() }
+                    }
+                    override fun onInstallReferrerServiceDisconnected() = Unit
+                })
+            }
+    }
+}

@@ -18,6 +18,10 @@ Read Google Play Install Referrer and parse `zq_token` plus `zq_host`, then post
 
 Use React Native `Linking` for verified HTTPS entry points. Keep the handoff mechanisms native: `UIPasteControl` on iOS and Play Install Referrer on Android. JavaScript receives only the user-approved iOS handoff or the Android referrer required for parsing; it does not introduce a ZipQuantum SDK or cross-app identifier.
 
+## Flutter
+
+Use `app_links` for verified HTTPS entry points. Keep deferred handoffs native through a Flutter platform view backed by `UIPasteControl` on iOS and a narrow MethodChannel backed by Play Install Referrer on Android. Dart must not read the iOS pasteboard or manufacture a handoff receipt.
+
 ## Route acknowledgement
 
 A successful response may contain `route_ack.receipt`, `route_ack.expires_in`, and `route_ack.endpoint`. After the destination route is actually displayed, POST the opaque receipt, host, platform, and registered app identifier to the supplied endpoint. Do not decode, persist, replay, or log the receipt.

@@ -49,6 +49,7 @@ These examples use platform APIs directly:
 | [SwiftUI](ios-swiftui/) | Universal Links | `UIPasteControl` user action | Signed `route_ack` receipt |
 | [Kotlin](android-kotlin/) | Verified App Links | Google Play Install Referrer | Signed `route_ack` receipt |
 | [React Native](react-native/) | `Linking` + verified HTTPS links | Native `UIPasteControl` / Install Referrer adapters | Signed `route_ack` receipt |
+| [Flutter](flutter/) | `app_links` + verified HTTPS links | Native `UIPasteControl` / Install Referrer adapters | Signed `route_ack` receipt |
 
 The sample identifiers and hosts are placeholders. Replace them with values verified in your ZipQuantum dashboard before running an app.
 

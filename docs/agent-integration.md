@@ -22,6 +22,8 @@ Never infer these values from branding or repository names. Read them from the Z
 
 For React Native, treat `react-native/ios` and `react-native/android` as required platform code, not optional JavaScript fallbacks. Do not replace `UIPasteControl` with a clipboard module.
 
+For Flutter, treat `flutter/ios` and `flutter/android` the same way. The MethodChannel surface is intentionally narrow and transports only a user-approved iOS handoff or raw Play Install Referrer value.
+
 ## Machine behavior
 
 - Commands are non-interactive.

@@ -1,0 +1,7 @@
+// Inside application(_:didFinishLaunchingWithOptions:), after GeneratedPluginRegistrant:
+if let registrar = self.registrar(forPlugin: "ZipQuantumPasteControl") {
+    registrar.register(
+        ZipQuantumPasteControlFactory(messenger: registrar.messenger()),
+        withId: "tn.zq.zipquantum/paste-control"
+    )
+}

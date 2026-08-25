@@ -7,6 +7,8 @@ DerivedData/
 xcuserdata/
 local.properties
 **/node_modules/
+**/.dart_tool/
+.flutter-plugins*
 .playwright-cli/
 output/playwright/
 *.jks
