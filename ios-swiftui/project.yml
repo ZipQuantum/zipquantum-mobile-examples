@@ -1,0 +1,27 @@
+name: ZipQuantumExample
+options:
+  minimumXcodeGenVersion: 2.42.0
+settings:
+  base:
+    DEVELOPMENT_TEAM: TEAM_ID
+    PRODUCT_BUNDLE_IDENTIFIER: com.example.ZipQuantumExample
+    IPHONEOS_DEPLOYMENT_TARGET: 16.0
+targets:
+  ZipQuantumExample:
+    type: application
+    platform: iOS
+    sources: [Sources]
+    settings:
+      base:
+        CODE_SIGN_ENTITLEMENTS: Sources/ZipQuantumExample.entitlements
+        GENERATE_INFOPLIST_FILE: YES
+        INFOPLIST_KEY_CFBundleDisplayName: ZipQuantum Link Example
+        INFOPLIST_KEY_UILaunchScreen_Generation: YES
+    scheme:
+      testTargets: [ZipQuantumExampleTests]
+  ZipQuantumExampleTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources: [Tests]
+    dependencies:
+      - target: ZipQuantumExample

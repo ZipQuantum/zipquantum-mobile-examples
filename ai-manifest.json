@@ -1,0 +1,31 @@
+{
+  "schema_version": "1.0",
+  "name": "ZipQuantum mobile examples",
+  "purpose": "Native deep-link and deferred-deep-link integration references",
+  "contract": "contracts/mobile-v1.schema.json",
+  "agent_instructions": "AGENTS.md",
+  "platforms": {
+    "ios": {
+      "path": "ios-swiftui",
+      "minimum_version": "16.0",
+      "direct_delivery": "Universal Links",
+      "deferred_delivery": "user-initiated UIPasteControl"
+    },
+    "android": {
+      "path": "android-kotlin",
+      "minimum_sdk": 23,
+      "direct_delivery": "verified App Links",
+      "deferred_delivery": "Google Play Install Referrer"
+    }
+  },
+  "privacy": {
+    "proprietary_sdk": false,
+    "fingerprinting": false,
+    "cross_app_identifier": false,
+    "clipboard_read_at_launch": false
+  },
+  "validate": {
+    "windows": "powershell -File scripts/validate.ps1",
+    "unix": "./scripts/validate.sh"
+  }
+}

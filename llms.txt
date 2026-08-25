@@ -1,0 +1,13 @@
+# ZipQuantum mobile examples
+
+> Native, auditable deep-link and deferred-deep-link integration examples with no proprietary SDK and no fingerprinting.
+
+Canonical agent instructions: AGENTS.md
+Machine-readable repository map: ai-manifest.json
+Mobile response schema: contracts/mobile-v1.schema.json
+Integration contract: docs/mobile-contract.md
+Agent workflow: docs/agent-integration.md
+iOS example: ios-swiftui/README.md
+Android example: android-kotlin/README.md
+
+Do not decode or persist deferred tokens or route receipts. Do not read the iOS clipboard silently. Do not introduce device fingerprints or cross-app identifiers.
