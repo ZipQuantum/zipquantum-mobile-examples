@@ -71,8 +71,6 @@ export async function run({ env = process.env, dryRun = hasFlag("dry-run") } = {
   const statePath = path.resolve(option("state", env.STATE_PATH || defaultStatePath));
   const backfill = Math.max(0, Number.parseInt(option("backfill", env.BACKFILL_COUNT || "0"), 10) || 0);
 
-  if (!dryRun) channels.forEach((channel) => validateChannel(channel, env));
-
   const [articles, state] = await Promise.all([fetchFeed(feedUrl), loadState(statePath)]);
   const oldestFirst = [...articles].sort((left, right) => new Date(left.publishedAt) - new Date(right.publishedAt));
   let candidates = oldestFirst;
@@ -115,6 +113,7 @@ export async function run({ env = process.env, dryRun = hasFlag("dry-run") } = {
       }
 
       try {
+        validateChannel(channel, env);
         const result = await publishers[channel](article, key, env);
         record.channels[channel] = {
           status: "published",
