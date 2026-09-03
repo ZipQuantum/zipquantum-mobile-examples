@@ -1,0 +1,76 @@
+name: Publish new blog articles to social channels
+
+on:
+  schedule:
+    - cron: "*/10 * * * *"
+  workflow_dispatch:
+    inputs:
+      backfill_count:
+        description: "Number of latest feed articles to publish (0 = new articles only)"
+        required: false
+        default: "0"
+
+permissions:
+  contents: write
+  discussions: write
+
+concurrency:
+  group: zipquantum-blog-social-publisher
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Publish new articles
+        id: publisher
+        continue-on-error: true
+        env:
+          FEED_URL: https://zq.tn/blog/feed/
+          ENABLED_CHANNELS: ${{ vars.SOCIAL_ENABLED_CHANNELS || 'linkedin,github,reddit,x' }}
+          BACKFILL_COUNT: ${{ inputs.backfill_count || '0' }}
+          LINKEDIN_ACCESS_TOKEN: ${{ secrets.LINKEDIN_ACCESS_TOKEN }}
+          LINKEDIN_AUTHOR_URN: ${{ vars.LINKEDIN_AUTHOR_URN }}
+          LINKEDIN_VERSION: ${{ vars.LINKEDIN_VERSION || '202608' }}
+          GITHUB_TOKEN: ${{ github.token }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          GITHUB_DISCUSSION_CATEGORY: ${{ vars.GITHUB_DISCUSSION_CATEGORY || 'announcements' }}
+          REDDIT_CLIENT_ID: ${{ secrets.REDDIT_CLIENT_ID }}
+          REDDIT_CLIENT_SECRET: ${{ secrets.REDDIT_CLIENT_SECRET }}
+          REDDIT_REFRESH_TOKEN: ${{ secrets.REDDIT_REFRESH_TOKEN }}
+          REDDIT_SUBREDDIT: ${{ vars.REDDIT_SUBREDDIT || 'u_ZipQuantum' }}
+          REDDIT_USER_AGENT: ${{ vars.REDDIT_USER_AGENT || 'script:zipquantum-blog-publisher:1.0 (by /u/ZipQuantum)' }}
+          X_CONSUMER_KEY: ${{ secrets.X_CONSUMER_KEY }}
+          X_CONSUMER_SECRET: ${{ secrets.X_CONSUMER_SECRET }}
+          X_ACCESS_TOKEN: ${{ secrets.X_ACCESS_TOKEN }}
+          X_ACCESS_TOKEN_SECRET: ${{ secrets.X_ACCESS_TOKEN_SECRET }}
+        run: node social-publisher/src/index.js
+
+      - name: Persist publication ledger
+        if: always()
+        shell: bash
+        run: |
+          if git diff --quiet -- social-publisher/data/published.json; then
+            exit 0
+          fi
+          git config user.name "zipquantum-social-bot"
+          git config user.email "zipquantum-social-bot@users.noreply.github.com"
+          git add social-publisher/data/published.json
+          git commit -m "chore: update social publication ledger [skip ci]"
+          if ! git push; then
+            git pull --rebase
+            git push
+          fi
+
+      - name: Report publication failure
+        if: steps.publisher.outcome == 'failure'
+        run: exit 1

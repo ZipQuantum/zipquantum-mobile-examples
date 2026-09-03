@@ -1,0 +1,34 @@
+{
+  "version": 1,
+  "initializedAt": "2026-09-03T14:27:30.000Z",
+  "articles": {
+    "03ae167296ed595a8c03d62a": {
+      "title": "Mobile Campaign Link Audit: A Marketer’s Checklist",
+      "url": "https://zq.tn/mobile-campaign-link-audit/",
+      "publishedAt": "Thu, 03 Sep 2026 14:27:31 +0000",
+      "baseline": false,
+      "channels": {}
+    },
+    "369b1132e9c1ffb342beae5e": {
+      "title": "How to Migrate from Firebase Dynamic Links in 2026",
+      "url": "https://zq.tn/firebase-dynamic-links-migration-guide/",
+      "publishedAt": "Wed, 02 Sep 2026 17:31:21 +0000",
+      "baseline": true,
+      "channels": {}
+    },
+    "09eaabdb26999b5c3f587466": {
+      "title": "Deferred Deep Linking Without a Proprietary SDK",
+      "url": "https://zq.tn/deferred-deep-linking-without-proprietary-sdk/",
+      "publishedAt": "Wed, 02 Sep 2026 17:21:21 +0000",
+      "baseline": true,
+      "channels": {}
+    },
+    "f20e46d8b40f9de810771563": {
+      "title": "Universal Links vs Android App Links: Setup and Testing",
+      "url": "https://zq.tn/universal-links-vs-android-app-links/",
+      "publishedAt": "Wed, 02 Sep 2026 17:11:21 +0000",
+      "baseline": true,
+      "channels": {}
+    }
+  }
+}
