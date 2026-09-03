@@ -7,7 +7,29 @@
       "url": "https://zq.tn/mobile-campaign-link-audit/",
       "publishedAt": "Thu, 03 Sep 2026 14:27:31 +0000",
       "baseline": false,
-      "channels": {}
+      "channels": {
+        "linkedin": {
+          "status": "failed",
+          "failedAt": "2026-09-03T18:00:56.521Z",
+          "error": "Missing configuration: LINKEDIN_ACCESS_TOKEN, LINKEDIN_AUTHOR_URN"
+        },
+        "github": {
+          "status": "published",
+          "id": "D_kwDOUDiPGs4Ao_Dy",
+          "url": "https://github.com/ZipQuantum/zipquantum-mobile-examples/discussions/1",
+          "publishedAt": "2026-09-03T18:00:57.573Z"
+        },
+        "reddit": {
+          "status": "failed",
+          "failedAt": "2026-09-03T18:00:57.575Z",
+          "error": "Missing configuration: REDDIT_CLIENT_ID, REDDIT_CLIENT_SECRET, REDDIT_REFRESH_TOKEN"
+        },
+        "x": {
+          "status": "failed",
+          "failedAt": "2026-09-03T18:00:57.576Z",
+          "error": "Missing configuration: X_CONSUMER_KEY, X_CONSUMER_SECRET, X_ACCESS_TOKEN, X_ACCESS_TOKEN_SECRET"
+        }
+      }
     },
     "369b1132e9c1ffb342beae5e": {
       "title": "How to Migrate from Firebase Dynamic Links in 2026",
