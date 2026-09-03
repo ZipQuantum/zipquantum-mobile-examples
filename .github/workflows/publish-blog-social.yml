@@ -41,7 +41,7 @@ jobs:
           LINKEDIN_ACCESS_TOKEN: ${{ secrets.LINKEDIN_ACCESS_TOKEN }}
           LINKEDIN_AUTHOR_URN: ${{ vars.LINKEDIN_AUTHOR_URN }}
           LINKEDIN_VERSION: ${{ vars.LINKEDIN_VERSION || '202608' }}
-          GITHUB_TOKEN: ${{ github.token }}
+          GITHUB_TOKEN: ${{ secrets.SOCIAL_GITHUB_TOKEN }}
           GITHUB_REPOSITORY: ${{ github.repository }}
           GITHUB_DISCUSSION_CATEGORY: ${{ vars.GITHUB_DISCUSSION_CATEGORY || 'announcements' }}
           REDDIT_CLIENT_ID: ${{ secrets.REDDIT_CLIENT_ID }}

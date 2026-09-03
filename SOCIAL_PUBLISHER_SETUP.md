@@ -32,11 +32,12 @@ Dans **Settings → Secrets and variables → Actions → Variables**, ajouter :
 
 Dans l'onglet **Secrets**, ajouter :
 
+- `SOCIAL_GITHUB_TOKEN` : jeton finement configuré du compte éditeur, limité au dépôt cible avec `Discussions: read and write`. Les Discussions automatiques apparaîtront sous ce compte.
 - `LINKEDIN_ACCESS_TOKEN` : jeton utilisateur disposant de `w_organization_social` et d'un rôle autorisé sur la page.
 - `REDDIT_CLIENT_ID`, `REDDIT_CLIENT_SECRET`, `REDDIT_REFRESH_TOKEN` : application OAuth Reddit autorisée à publier avec le scope `submit`.
 - `X_CONSUMER_KEY`, `X_CONSUMER_SECRET`, `X_ACCESS_TOKEN`, `X_ACCESS_TOKEN_SECRET` : application X configurée avec les droits **Read and write**.
 
-Le jeton GitHub interne est fourni automatiquement au workflow. Pour GitHub Discussions, aucun PAT supplémentaire n'est requis dans le dépôt cible.
+Le jeton GitHub interne reste utilisé par `actions/checkout` pour persister le registre. Le jeton `SOCIAL_GITHUB_TOKEN` sert uniquement à publier les Discussions sous l'identité du compte éditeur.
 
 Le workflow doit aussi pouvoir pousser son petit commit de registre sur la branche par défaut. Si une règle de protection interdit les pushes de GitHub Actions, autoriser ce workflow ou utiliser une branche dédiée pour le registre; sans persistance du registre, aucun système externe ne peut garantir l'absence de doublons après un redémarrage.
 
