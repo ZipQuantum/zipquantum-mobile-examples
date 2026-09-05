@@ -74,5 +74,6 @@ See [SECURITY.md](SECURITY.md). Device context is optional and coarse. Do not ad
 MIT
 
 <p align="center">
+  <img src="docs/assets/footer-super-z.png" alt="ZipQuantum mascot waving" width="150"><br>
   <a href="https://zq.tn/">Product</a> · <a href="https://zq.tn/docs/">Documentation</a> · <a href="https://zq.tn/developers/ai-agents/">AI agents</a>
 </p>
