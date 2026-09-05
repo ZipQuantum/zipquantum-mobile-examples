@@ -51,6 +51,19 @@
       "publishedAt": "Wed, 02 Sep 2026 17:11:21 +0000",
       "baseline": true,
       "channels": {}
+    },
+    "9eaf962a4e15a6bebd502fc7": {
+      "title": "Your Referral Program Isn’t a Growth Loop Until the Invite Survives Installation",
+      "url": "https://zq.tn/mobile-referral-loop-audit/",
+      "publishedAt": "Sat, 05 Sep 2026 14:52:06 +0000",
+      "baseline": false,
+      "channels": {
+        "github": {
+          "status": "failed",
+          "failedAt": "2026-09-05T15:42:01.123Z",
+          "error": "GitHub GraphQL error: [{\"type\":\"NOT_FOUND\",\"path\":[\"repository\",\"discussionCategory\"],\"locations\":[{\"line\":2,\"column\":51}],\"message\":\"Could not resolve to a DiscussionCategory with the slug announcements.\"}]"
+        }
+      }
     }
   }
 }
