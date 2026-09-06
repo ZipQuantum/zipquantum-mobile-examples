@@ -60,7 +60,7 @@
       "channels": {
         "github": {
           "status": "failed",
-          "failedAt": "2026-09-05T23:15:14.250Z",
+          "failedAt": "2026-09-06T00:59:53.280Z",
           "error": "GitHub GraphQL error: [{\"type\":\"NOT_FOUND\",\"path\":[\"repository\",\"discussionCategory\"],\"locations\":[{\"line\":2,\"column\":51}],\"message\":\"Could not resolve to a DiscussionCategory with the slug announcements.\"}]"
         }
       }
