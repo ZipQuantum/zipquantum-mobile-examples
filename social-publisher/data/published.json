@@ -59,9 +59,24 @@
       "baseline": false,
       "channels": {
         "github": {
-          "status": "failed",
-          "failedAt": "2026-09-07T13:35:17.266Z",
-          "error": "GitHub GraphQL error: [{\"type\":\"NOT_FOUND\",\"path\":[\"repository\",\"discussionCategory\"],\"locations\":[{\"line\":2,\"column\":51}],\"message\":\"Could not resolve to a DiscussionCategory with the slug announcements.\"}]"
+          "status": "published",
+          "id": "D_kwDOUDiPGs4ApFRc",
+          "url": "https://github.com/orgs/ZipQuantum/discussions/6",
+          "publishedAt": "2026-09-07T18:22:07.971Z"
+        }
+      }
+    },
+    "7f7bd724a23f10e9f0f59d34": {
+      "title": "WordPress Smart Links & QR Codes: A Practical Content-to-Campaign Workflow",
+      "url": "https://zq.tn/wordpress-smart-links-qr-codes-workflow/",
+      "publishedAt": "Mon, 07 Sep 2026 14:57:30 +0000",
+      "baseline": false,
+      "channels": {
+        "github": {
+          "status": "published",
+          "id": "D_kwDOUDiPGs4ApFRd",
+          "url": "https://github.com/orgs/ZipQuantum/discussions/7",
+          "publishedAt": "2026-09-07T18:22:09.113Z"
         }
       }
     }
