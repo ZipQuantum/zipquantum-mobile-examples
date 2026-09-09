@@ -93,6 +93,20 @@
           "publishedAt": "2026-09-08T18:35:22.758Z"
         }
       }
+    },
+    "eb66e0636a7bdd2298c2b5b3": {
+      "title": "Deep Link Doctor: A Universal Link and Android App Link Tester",
+      "url": "https://zq.tn/deep-link-doctor-universal-app-link-tester/",
+      "publishedAt": "Wed, 09 Sep 2026 16:45:37 +0000",
+      "baseline": false,
+      "channels": {
+        "github": {
+          "status": "published",
+          "id": "D_kwDOUDiPGs4ApIvS",
+          "url": "https://github.com/orgs/ZipQuantum/discussions/11",
+          "publishedAt": "2026-09-09T18:38:43.753Z"
+        }
+      }
     }
   }
 }
