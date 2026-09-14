@@ -22,6 +22,19 @@ Use React Native `Linking` for verified HTTPS entry points. Keep the handoff mec
 
 Use `app_links` for verified HTTPS entry points. Keep deferred handoffs native through a Flutter platform view backed by `UIPasteControl` on iOS and a narrow MethodChannel backed by Play Install Referrer on Android. Dart must not read the iOS pasteboard or manufacture a handoff receipt.
 
+## Tauri 2
+
+Use the official deep-link plugin for installed links. Register the desktop
+single-instance plugin first so cold-start and already-running URLs reach the
+same allowlisted route parser. On mobile, keep deferred recovery native:
+`UIPasteControl` on iOS and Play Install Referrer on Android. The webview receives
+only the one-time handoff fields needed by `mobile-v1`.
+
+Desktop demonstrates direct custom-scheme routing only. A local webview origin is
+not a verified mobile app identity, so desktop must not submit `route_ack` under
+`mobile-v1`. A separate server trust contract would be required before adding
+desktop acknowledgements or deferred recovery.
+
 ## Route acknowledgement
 
 A successful response may contain `route_ack.receipt`, `route_ack.expires_in`, and `route_ack.endpoint`. After the destination route is actually displayed, POST the opaque receipt, host, platform, and registered app identifier to the supplied endpoint. Do not decode, persist, replay, or log the receipt.

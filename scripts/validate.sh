@@ -10,7 +10,7 @@ fail() { printf 'ZQ_ERROR %s\n' "$1"; ERRORS=$((ERRORS + 1)); }
 python3 -m json.tool "$ROOT/contracts/mobile-v1.schema.json" >/dev/null && ok contract_json_valid || fail contract_json_invalid
 python3 -m json.tool "$ROOT/ai-manifest.json" >/dev/null && ok ai_manifest_valid || fail ai_manifest_invalid
 
-if grep -R -n -E --exclude-dir=node_modules --exclude-dir=.dart_tool 'AdvertisingIdClient|identifierForVendor|ASIdentifierManager|fingerprintjs|UIPasteboard\.general\.string' "$ROOT/ios-swiftui" "$ROOT/android-kotlin" "$ROOT/react-native" "$ROOT/flutter"; then
+if grep -R -n -E --exclude-dir=node_modules --exclude-dir=.dart_tool --exclude-dir=dist --exclude-dir=target 'AdvertisingIdClient|identifierForVendor|ASIdentifierManager|fingerprintjs|UIPasteboard\.general\.string' "$ROOT/ios-swiftui" "$ROOT/android-kotlin" "$ROOT/react-native" "$ROOT/flutter" "$ROOT/tauri"; then
   fail forbidden_privacy_pattern
 else
   ok privacy_invariants_static
@@ -38,6 +38,26 @@ fi
 if [ "$PLATFORM" = all ] || [ "$PLATFORM" = android ]; then
   grep -q 'android:autoVerify="true"' "$ROOT/android-kotlin/app/src/main/AndroidManifest.xml" && ok android_autoverify_enabled || fail android_autoverify_missing
   grep -q links.example.com "$ROOT/android-kotlin/app/src/main/java/com/example/zipquantum/ZQConfiguration.kt" && warn android_uses_example_host || ok android_host_configured
+fi
+
+if [ "$PLATFORM" = all ] || [ "$PLATFORM" = tauri ]; then
+  RUST="$ROOT/tauri/src-tauri/src/lib.rs"
+  FRONTEND="$ROOT/tauri/src/main.ts"
+  CONTROLLER="$ROOT/tauri/src/controller.ts"
+  IOS="$ROOT/tauri/plugins/deferred-link/ios/Sources/ZqDeferredPlugin.swift"
+  ANDROID="$ROOT/tauri/plugins/deferred-link/android/src/main/java/com/zipquantum/tauri/deferredlink/ZqDeferredPlugin.kt"
+  CONFIG="$ROOT/tauri/src/config.ts"
+  TAURI_IDENTIFIER=$(python3 -c 'import json,sys; print(json.load(open(sys.argv[1], encoding="utf-8"))["identifier"])' "$ROOT/tauri/src-tauri/tauri.conf.json")
+
+  SINGLE_LINE=$(grep -n 'tauri_plugin_single_instance::init' "$RUST" | head -n 1 | cut -d: -f1 || true)
+  DEEP_LINE=$(grep -n 'tauri_plugin_deep_link::init' "$RUST" | head -n 1 | cut -d: -f1 || true)
+  [ -n "$SINGLE_LINE" ] && [ -n "$DEEP_LINE" ] && [ "$SINGLE_LINE" -lt "$DEEP_LINE" ] && ok tauri_single_instance_registered_first || fail tauri_single_instance_order_invalid
+  grep -q getCurrent "$FRONTEND" && grep -q onOpenUrl "$FRONTEND" && grep -q handleDirectUrls "$FRONTEND" && ok tauri_cold_warm_shared_handler || fail tauri_cold_warm_handler_missing
+  grep -q UIPasteControl "$IOS" && ! grep -q 'UIPasteboard\.general' "$IOS" && ok tauri_ios_explicit_paste_control || fail tauri_ios_paste_boundary_invalid
+  grep -q InstallReferrerClient "$ANDROID" && grep -q AtomicBoolean "$ANDROID" && ! grep -q -E 'SharedPreferences|android\.util\.Log' "$ANDROID" && ok tauri_android_one_shot_referrer || fail tauri_android_referrer_boundary_invalid
+  grep -q "platform === 'Desktop'" "$CONTROLLER" && grep -q acknowledgeAfterRender "$CONTROLLER" && ok tauri_desktop_ack_out_of_scope || fail tauri_desktop_ack_boundary_missing
+  grep -q "iOS: '$TAURI_IDENTIFIER'" "$CONFIG" && grep -q "Android: '$TAURI_IDENTIFIER'" "$CONFIG" && ok tauri_mobile_identity_matches_bundle || fail tauri_mobile_identity_mismatch
+  grep -q links.example.com "$CONFIG" && grep -q com.example.zipquantum "$CONFIG" && warn tauri_uses_example_identifiers || ok tauri_identifiers_configured
 fi
 
 [ "$ERRORS" -eq 0 ] || exit 1

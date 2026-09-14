@@ -1,4 +1,4 @@
-param([ValidateSet('all','ios','android','react-native','flutter')][string]$Platform = 'all')
+param([ValidateSet('all','ios','android','react-native','flutter','tauri')][string]$Platform = 'all')
 $ErrorActionPreference = 'Stop'
 $root = Split-Path -Parent $PSScriptRoot
 $errors = 0
@@ -15,8 +15,9 @@ $sources = Get-ChildItem @(
   "$root/android-kotlin",
   "$root/react-native"
   "$root/flutter"
+  "$root/tauri"
 ) -Recurse -File | Where-Object {
-  $_.FullName -notmatch '[\\/](node_modules|build|\.gradle|\.dart_tool|Pods)[\\/]'
+  $_.FullName -notmatch '[\\/](node_modules|build|dist|target|\.gradle|\.dart_tool|Pods)[\\/]'
 }
 $forbidden = 'AdvertisingIdClient|identifierForVendor|ASIdentifierManager|fingerprintjs|UIPasteboard\.general\.string'
 $matches = $sources | Select-String -Pattern $forbidden
@@ -56,6 +57,26 @@ if ($Platform -in @('all','flutter')) {
   if ($manifest -match 'android:autoVerify="true"') { Ok 'flutter_android_autoverify_enabled' } else { Fail 'flutter_android_autoverify_missing' }
   if ($referrer -match 'InstallReferrerClient') { Ok 'flutter_install_referrer_enabled' } else { Fail 'flutter_install_referrer_missing' }
   if ($config -match 'links\.example\.com') { Warn 'flutter_uses_example_host' } else { Ok 'flutter_host_configured' }
+}
+
+if ($Platform -in @('all','tauri')) {
+  $rust = Get-Content "$root/tauri/src-tauri/src/lib.rs" -Raw
+  $frontend = Get-Content "$root/tauri/src/main.ts" -Raw
+  $controller = Get-Content "$root/tauri/src/controller.ts" -Raw
+  $ios = Get-Content "$root/tauri/plugins/deferred-link/ios/Sources/ZqDeferredPlugin.swift" -Raw
+  $android = Get-Content "$root/tauri/plugins/deferred-link/android/src/main/java/com/zipquantum/tauri/deferredlink/ZqDeferredPlugin.kt" -Raw
+  $config = Get-Content "$root/tauri/src/config.ts" -Raw
+  $tauriConfig = Get-Content "$root/tauri/src-tauri/tauri.conf.json" -Raw | ConvertFrom-Json
+  $singleIndex = $rust.IndexOf('tauri_plugin_single_instance::init')
+  $deepIndex = $rust.IndexOf('tauri_plugin_deep_link::init')
+
+  if ($singleIndex -ge 0 -and $deepIndex -gt $singleIndex) { Ok 'tauri_single_instance_registered_first' } else { Fail 'tauri_single_instance_order_invalid' }
+  if ($frontend -match 'getCurrent' -and $frontend -match 'onOpenUrl' -and $frontend -match 'handleDirectUrls') { Ok 'tauri_cold_warm_shared_handler' } else { Fail 'tauri_cold_warm_handler_missing' }
+  if ($ios -match 'UIPasteControl' -and $ios -notmatch 'UIPasteboard\.general') { Ok 'tauri_ios_explicit_paste_control' } else { Fail 'tauri_ios_paste_boundary_invalid' }
+  if ($android -match 'InstallReferrerClient' -and $android -match 'AtomicBoolean' -and $android -notmatch 'SharedPreferences|android\.util\.Log') { Ok 'tauri_android_one_shot_referrer' } else { Fail 'tauri_android_referrer_boundary_invalid' }
+  if ($controller -match "platform === 'Desktop'" -and $controller -match 'acknowledgeAfterRender') { Ok 'tauri_desktop_ack_out_of_scope' } else { Fail 'tauri_desktop_ack_boundary_missing' }
+  if ($config -match [regex]::Escape("iOS: '$($tauriConfig.identifier)'") -and $config -match [regex]::Escape("Android: '$($tauriConfig.identifier)'")) { Ok 'tauri_mobile_identity_matches_bundle' } else { Fail 'tauri_mobile_identity_mismatch' }
+  if ($config -match 'links\.example\.com' -and $config -match 'com\.example\.zipquantum') { Warn 'tauri_uses_example_identifiers' } else { Ok 'tauri_identifiers_configured' }
 }
 
 if ($errors -gt 0) { exit 1 }

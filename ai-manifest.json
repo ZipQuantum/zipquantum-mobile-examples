@@ -28,6 +28,13 @@
       "minimum_version": "3.47.1",
       "direct_delivery": "app_links with Universal Links or verified App Links",
       "deferred_delivery": "native UIPasteControl or Google Play Install Referrer adapter"
+    },
+    "tauri": {
+      "path": "tauri",
+      "minimum_version": "2.9.5",
+      "direct_delivery": "official deep-link plugin with desktop single-instance routing",
+      "deferred_delivery": "one-shot native UIPasteControl or Google Play Install Referrer plugin on mobile",
+      "route_ack": "mobile only; desktop intentionally unsupported"
     }
   },
   "privacy": {
