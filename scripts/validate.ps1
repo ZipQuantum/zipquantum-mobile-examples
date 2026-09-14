@@ -66,6 +66,7 @@ if ($Platform -in @('all','tauri')) {
   $ios = Get-Content "$root/tauri/plugins/deferred-link/ios/Sources/ZqDeferredPlugin.swift" -Raw
   $android = Get-Content "$root/tauri/plugins/deferred-link/android/src/main/java/com/zipquantum/tauri/deferredlink/ZqDeferredPlugin.kt" -Raw
   $config = Get-Content "$root/tauri/src/config.ts" -Raw
+  $tauriConfig = Get-Content "$root/tauri/src-tauri/tauri.conf.json" -Raw | ConvertFrom-Json
   $singleIndex = $rust.IndexOf('tauri_plugin_single_instance::init')
   $deepIndex = $rust.IndexOf('tauri_plugin_deep_link::init')
 
@@ -74,6 +75,7 @@ if ($Platform -in @('all','tauri')) {
   if ($ios -match 'UIPasteControl' -and $ios -notmatch 'UIPasteboard\.general') { Ok 'tauri_ios_explicit_paste_control' } else { Fail 'tauri_ios_paste_boundary_invalid' }
   if ($android -match 'InstallReferrerClient' -and $android -match 'AtomicBoolean' -and $android -notmatch 'SharedPreferences|android\.util\.Log') { Ok 'tauri_android_one_shot_referrer' } else { Fail 'tauri_android_referrer_boundary_invalid' }
   if ($controller -match "platform === 'Desktop'" -and $controller -match 'acknowledgeAfterRender') { Ok 'tauri_desktop_ack_out_of_scope' } else { Fail 'tauri_desktop_ack_boundary_missing' }
+  if ($config -match [regex]::Escape("iOS: '$($tauriConfig.identifier)'") -and $config -match [regex]::Escape("Android: '$($tauriConfig.identifier)'")) { Ok 'tauri_mobile_identity_matches_bundle' } else { Fail 'tauri_mobile_identity_mismatch' }
   if ($config -match 'links\.example\.com' -and $config -match 'com\.example\.zipquantum') { Warn 'tauri_uses_example_identifiers' } else { Ok 'tauri_identifiers_configured' }
 }
 

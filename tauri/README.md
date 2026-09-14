@@ -24,8 +24,9 @@ ZipQuantum dashboard:
 
 - `links.example.com` in `src/config.ts` and `src-tauri/tauri.conf.json`;
 - `app.example.com` and the allowlisted application routes in `src/routing.ts`;
-- `com.example.zipquantum` app identifiers;
-- `com.example.zipquantum.tauri` Tauri bundle identifier.
+- `com.example.zipquantum.tauri` in both `src/config.ts` and the Tauri bundle
+  identifier. They must remain identical because `mobile-v1` binds recovery and
+  acknowledgements to the installed app identity.
 
 Do not commit a live token, signing certificate, provisioning profile, handoff
 URL, route receipt, or user data.
@@ -81,5 +82,6 @@ powershell -File scripts/validate.ps1 tauri
 ```
 
 The checks use stable `ZQ_OK`, `ZQ_WARN`, and `ZQ_ERROR` prefixes. The TypeScript
-tests cover cold/warm direct delivery, deferred delivery, unknown routes,
-one-shot acknowledgement, and the desktop no-ack boundary.
+tests cover cold/warm direct delivery, serialized warm delivery, deferred
+delivery, unknown routes, one-shot acknowledgement, and the desktop no-ack
+boundary.

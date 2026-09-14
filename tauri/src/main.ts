@@ -3,6 +3,7 @@ import {type} from '@tauri-apps/plugin-os';
 import {DeliveryController} from './controller';
 import './style.css';
 import type {RuntimePlatform} from './config';
+import {NavigationQueue} from './navigation-queue';
 import type {PendingNavigation} from './types';
 import {getPendingRoute} from './zq-deferred';
 
@@ -19,6 +20,7 @@ function runtimePlatform(): RuntimePlatform {
 
 const platform = runtimePlatform();
 const controller = new DeliveryController(platform);
+const navigationQueue = new NavigationQueue();
 
 function renderStatus(message: string, isError = false): void {
   root.innerHTML = `
@@ -60,7 +62,13 @@ async function handleDirectUrls(values: string[]): Promise<void> {
   renderStatus('The link did not match an allowlisted route.', true);
 }
 
-async function recoverDeferred(): Promise<void> {
+function enqueueDirectUrls(values: string[]): Promise<void> {
+  // Keep the complete render/ack sequence serial: simultaneous warm-link
+  // events must not acknowledge a route replaced before its first paint.
+  return navigationQueue.enqueue(() => handleDirectUrls(values));
+}
+
+async function recoverDeferredNow(): Promise<void> {
   try {
     const handoff = await getPendingRoute();
     if (!handoff) {
@@ -73,13 +81,17 @@ async function recoverDeferred(): Promise<void> {
   }
 }
 
+function recoverDeferred(): Promise<void> {
+  return navigationQueue.enqueue(recoverDeferredNow);
+}
+
 async function start(): Promise<void> {
   renderStatus('Waiting for a direct or deferred deep link.');
   await onOpenUrl((urls) => {
-    void handleDirectUrls(urls);
+    void enqueueDirectUrls(urls);
   });
   const coldStartURLs = await getCurrent();
-  if (coldStartURLs?.length) await handleDirectUrls(coldStartURLs);
+  if (coldStartURLs?.length) await enqueueDirectUrls(coldStartURLs);
 }
 
 void start();

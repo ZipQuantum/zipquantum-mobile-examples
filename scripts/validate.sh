@@ -47,6 +47,7 @@ if [ "$PLATFORM" = all ] || [ "$PLATFORM" = tauri ]; then
   IOS="$ROOT/tauri/plugins/deferred-link/ios/Sources/ZqDeferredPlugin.swift"
   ANDROID="$ROOT/tauri/plugins/deferred-link/android/src/main/java/com/zipquantum/tauri/deferredlink/ZqDeferredPlugin.kt"
   CONFIG="$ROOT/tauri/src/config.ts"
+  TAURI_IDENTIFIER=$(python3 -c 'import json,sys; print(json.load(open(sys.argv[1], encoding="utf-8"))["identifier"])' "$ROOT/tauri/src-tauri/tauri.conf.json")
 
   SINGLE_LINE=$(grep -n 'tauri_plugin_single_instance::init' "$RUST" | head -n 1 | cut -d: -f1 || true)
   DEEP_LINE=$(grep -n 'tauri_plugin_deep_link::init' "$RUST" | head -n 1 | cut -d: -f1 || true)
@@ -55,6 +56,7 @@ if [ "$PLATFORM" = all ] || [ "$PLATFORM" = tauri ]; then
   grep -q UIPasteControl "$IOS" && ! grep -q 'UIPasteboard\.general' "$IOS" && ok tauri_ios_explicit_paste_control || fail tauri_ios_paste_boundary_invalid
   grep -q InstallReferrerClient "$ANDROID" && grep -q AtomicBoolean "$ANDROID" && ! grep -q -E 'SharedPreferences|android\.util\.Log' "$ANDROID" && ok tauri_android_one_shot_referrer || fail tauri_android_referrer_boundary_invalid
   grep -q "platform === 'Desktop'" "$CONTROLLER" && grep -q acknowledgeAfterRender "$CONTROLLER" && ok tauri_desktop_ack_out_of_scope || fail tauri_desktop_ack_boundary_missing
+  grep -q "iOS: '$TAURI_IDENTIFIER'" "$CONFIG" && grep -q "Android: '$TAURI_IDENTIFIER'" "$CONFIG" && ok tauri_mobile_identity_matches_bundle || fail tauri_mobile_identity_mismatch
   grep -q links.example.com "$CONFIG" && grep -q com.example.zipquantum "$CONFIG" && warn tauri_uses_example_identifiers || ok tauri_identifiers_configured
 fi
 

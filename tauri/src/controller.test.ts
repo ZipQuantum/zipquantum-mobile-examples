@@ -36,6 +36,9 @@ describe('direct and deferred delivery', () => {
       'https://a.zq.tn/api/mobile/v1/links/resolve',
       'https://a.zq.tn/api/mobile/v1/links/resolve',
     ]);
+    expect(JSON.parse(String(fetcher.mock.calls[0]?.[1]?.body))).toMatchObject({
+      package_name: 'com.example.zipquantum.tauri',
+    });
   });
 
   it('acknowledges once and only after the caller renders', async () => {
@@ -62,6 +65,9 @@ describe('direct and deferred delivery', () => {
 
     expect(navigation.route).toEqual({kind: 'product', identifier: 'example-42'});
     expect(String(fetcher.mock.calls[0]?.[0])).toBe('https://a.zq.tn/api/mobile/v1/deferred/recover');
+    expect(JSON.parse(String(fetcher.mock.calls[0]?.[1]?.body))).toMatchObject({
+      package_name: 'com.example.zipquantum.tauri',
+    });
   });
 
   it('never emits a desktop route acknowledgement', async () => {

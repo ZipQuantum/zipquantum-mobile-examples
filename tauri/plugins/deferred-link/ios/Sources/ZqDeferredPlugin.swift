@@ -115,6 +115,9 @@ final class ZqDeferredPlugin: Plugin {
         invoke.resolve(["handoff": ["token": handoff.token, "host": handoff.host]])
       }
       controller.modalPresentationStyle = .formSheet
+      // A swipe-to-dismiss does not invoke the explicit Cancel handler and
+      // would otherwise leave the Tauri command unresolved forever.
+      controller.isModalInPresentation = true
       self.presentViewController(controller)
     }
   }
