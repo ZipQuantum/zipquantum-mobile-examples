@@ -121,6 +121,20 @@
           "publishedAt": "2026-09-14T13:58:12.982Z"
         }
       }
+    },
+    "fb6a9b2533712c106eb1e59c": {
+      "title": "Tauri Smart Links: From Community Proposal to Tested Reference Integration",
+      "url": "https://zq.tn/tauri-smart-links-reference-integration/",
+      "publishedAt": "Mon, 14 Sep 2026 18:47:55 +0000",
+      "baseline": false,
+      "channels": {
+        "github": {
+          "status": "published",
+          "id": "D_kwDOUDiPGs4ApQXS",
+          "url": "https://github.com/orgs/ZipQuantum/discussions/15",
+          "publishedAt": "2026-09-14T19:01:15.136Z"
+        }
+      }
     }
   }
 }
