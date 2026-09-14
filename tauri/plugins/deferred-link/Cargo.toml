@@ -1,0 +1,17 @@
+[package]
+name = "tauri-plugin-zq-deferred"
+version = "0.1.0"
+authors = ["ZipQuantum"]
+description = "One-shot, native deferred-link handoff for the ZipQuantum Tauri example"
+edition = "2021"
+rust-version = "1.77.2"
+exclude = ["/examples", "/dist-js", "/guest-js", "/node_modules"]
+links = "tauri-plugin-zq-deferred"
+
+[dependencies]
+tauri = { version = "2.9.5" }
+serde = { version = "1.0", features = ["derive"] }
+thiserror = "2"
+
+[build-dependencies]
+tauri-plugin = { version = "2.5.2", features = ["build"] }

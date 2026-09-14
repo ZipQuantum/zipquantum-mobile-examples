@@ -24,6 +24,7 @@ This repository contains independent mobile reference apps. Do not add a proprie
 - `android-kotlin/`: Jetpack Compose example.
 - `react-native/`: React Native TypeScript example with auditable native adapters.
 - `flutter/`: Flutter/Dart example with auditable native adapters.
+- `tauri/`: Tauri 2 webview app plus a narrow native deferred-link plugin.
 - `contracts/`: machine-readable API shapes.
 - `docs/`: human and agent integration guidance.
 - `scripts/`: non-interactive validation entrypoints.

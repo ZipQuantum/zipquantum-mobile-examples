@@ -24,6 +24,13 @@ For React Native, treat `react-native/ios` and `react-native/android` as require
 
 For Flutter, treat `flutter/ios` and `flutter/android` the same way. The MethodChannel surface is intentionally narrow and transports only a user-approved iOS handoff or raw Play Install Referrer value.
 
+For Tauri, register `tauri-plugin-single-instance` before
+`tauri-plugin-deep-link`. Direct cold-start and warm URLs must enter the same
+allowlisted parser. The local deferred-link plugin is one-shot: Android reads
+Play Install Referrer once, while iOS presents a visible `UIPasteControl` and
+waits for the user's action. Never add a silent clipboard fallback. Do not add a
+desktop `route_ack` unless a distinct server-side desktop trust contract exists.
+
 ## Machine behavior
 
 - Commands are non-interactive.

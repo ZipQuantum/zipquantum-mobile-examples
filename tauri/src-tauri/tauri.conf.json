@@ -1,0 +1,44 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "ZipQuantum Tauri Example",
+  "version": "0.1.0",
+  "identifier": "com.example.zipquantum.tauri",
+  "build": {
+    "beforeDevCommand": "npm run dev",
+    "devUrl": "http://localhost:1420",
+    "beforeBuildCommand": "npm run build",
+    "frontendDist": "../dist"
+  },
+  "app": {
+    "windows": [
+      {
+        "title": "ZipQuantum Tauri example",
+        "width": 760,
+        "height": 620,
+        "minWidth": 360,
+        "minHeight": 520
+      }
+    ],
+    "security": {
+      "csp": "default-src 'self'; connect-src 'self' ipc: http://ipc.localhost https://a.zq.tn; img-src 'self' data:; style-src 'self' 'unsafe-inline'; object-src 'none'; base-uri 'none'; frame-src 'none'"
+    }
+  },
+  "bundle": {
+    "active": false
+  },
+  "plugins": {
+    "deep-link": {
+      "desktop": {
+        "schemes": ["zq-example"]
+      },
+      "mobile": [
+        {
+          "scheme": ["https"],
+          "host": "links.example.com",
+          "pathPrefix": ["/open"],
+          "appLink": true
+        }
+      ]
+    }
+  }
+}

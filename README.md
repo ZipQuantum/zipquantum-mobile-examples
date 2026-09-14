@@ -50,6 +50,7 @@ These examples use platform APIs directly:
 | [Kotlin](android-kotlin/) | Verified App Links | Google Play Install Referrer | Signed `route_ack` receipt |
 | [React Native](react-native/) | `Linking` + verified HTTPS links | Native `UIPasteControl` / Install Referrer adapters | Signed `route_ack` receipt |
 | [Flutter](flutter/) | `app_links` + verified HTTPS links | Native `UIPasteControl` / Install Referrer adapters | Signed `route_ack` receipt |
+| [Tauri 2](tauri/) | Official deep-link plugin + desktop single instance | Native `UIPasteControl` / Install Referrer plugin on mobile | Mobile only, after the destination renders |
 
 The sample identifiers and hosts are placeholders. Replace them with values verified in your ZipQuantum dashboard before running an app.
 
