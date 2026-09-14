@@ -107,6 +107,20 @@
           "publishedAt": "2026-09-09T18:38:43.753Z"
         }
       }
+    },
+    "0a0cc2f70c977987700f5e20": {
+      "title": "Short Links for AI Agents: Preserve Campaign Context from Click to App",
+      "url": "https://zq.tn/short-links-ai-agents-campaign-context/",
+      "publishedAt": "Mon, 14 Sep 2026 10:17:21 +0000",
+      "baseline": false,
+      "channels": {
+        "github": {
+          "status": "published",
+          "id": "D_kwDOUDiPGs4ApP52",
+          "url": "https://github.com/orgs/ZipQuantum/discussions/14",
+          "publishedAt": "2026-09-14T13:58:12.982Z"
+        }
+      }
     }
   }
 }
