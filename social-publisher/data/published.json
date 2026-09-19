@@ -163,6 +163,20 @@
           "publishedAt": "2026-09-16T19:51:28.217Z"
         }
       }
+    },
+    "4afa3ad0af9340acc2530bd1": {
+      "title": "One QR, Many Lifecycle Moments: Dynamic QR Codes for Packaging and Delivery",
+      "url": "https://zq.tn/dynamic-qr-codes-packaging-delivery-lifecycle/",
+      "publishedAt": "Sat, 19 Sep 2026 15:27:43 +0000",
+      "baseline": false,
+      "channels": {
+        "github": {
+          "status": "published",
+          "id": "D_kwDOUDiPGs4ApYgD",
+          "url": "https://github.com/orgs/ZipQuantum/discussions/18",
+          "publishedAt": "2026-09-19T16:55:34.972Z"
+        }
+      }
     }
   }
 }
